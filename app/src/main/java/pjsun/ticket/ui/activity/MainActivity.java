@@ -4,24 +4,47 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.litepal.crud.DataSupport;
+
+import java.util.List;
+
 import pjsun.ticket.R;
+import pjsun.ticket.business.bean.Ticket;
+import pjsun.ticket.ui.activity.adapter.TicketMainAdapter;
 import pjsun.ticket.ui.activity.base.BaseActivity;
 
 public class MainActivity extends BaseActivity {
+
+    private RecyclerView recyclerView;
+    private TicketMainAdapter ticketMainAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initView();
+        initData();
+    }
+
+    private void initData() {
+        List<Ticket> tickets = DataSupport.findAll(Ticket.class);
+        ticketMainAdapter = new TicketMainAdapter(tickets);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        recyclerView.setAdapter(ticketMainAdapter);
+    }
+
+    private void initView() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-       FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -30,6 +53,7 @@ public class MainActivity extends BaseActivity {
                         .setAction("Action", null).show();
             }
         });
+        recyclerView = (RecyclerView) findViewById(R.id.ticket_list);
     }
 
     @Override
