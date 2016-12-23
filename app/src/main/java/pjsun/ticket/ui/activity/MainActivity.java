@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +21,7 @@ import pjsun.ticket.R;
 import pjsun.ticket.business.bean.Ticket;
 import pjsun.ticket.ui.activity.adapter.TicketMainAdapter;
 import pjsun.ticket.ui.activity.base.BaseActivity;
+import pjsun.ticket.ui.activity.view.controller.ItemTouchHelperClass;
 
 public class MainActivity extends BaseActivity {
 
@@ -37,6 +40,12 @@ public class MainActivity extends BaseActivity {
         List<Ticket> tickets = DataSupport.findAll(Ticket.class);
         ticketMainAdapter = new TicketMainAdapter(tickets);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        ItemTouchHelper.Callback callback = new ItemTouchHelperClass(ticketMainAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+        recyclerView.setBackgroundColor(getResources().getColor(R.color.primary_lightest));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(ticketMainAdapter);
     }
 
