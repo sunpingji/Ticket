@@ -2,19 +2,13 @@ package pjsun.ticket.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import org.litepal.LitePal;
-import org.litepal.crud.DataSupport;
-
-import java.util.List;
+import com.blankj.utilcode.utils.ToastUtils;
 
 import pjsun.ticket.R;
 import pjsun.ticket.business.bean.Ticket;
@@ -56,7 +50,7 @@ public class AddTicketActivity extends BaseActivity {
                     ticket.save();
                     finish();
                 } else {
-                    Toast.makeText(AddTicketActivity.this, "something wrong", Toast.LENGTH_SHORT).show();
+                    ToastUtils.showShortToast("something wrong");
                 }
             }
         });

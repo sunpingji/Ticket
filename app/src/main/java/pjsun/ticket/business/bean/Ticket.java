@@ -7,7 +7,7 @@ import java.io.Serializable;
 import pjsun.ticket.business.bean.base.BaseBean;
 
 /**
- * Created by sunpi on 2016/12/22.
+ * Created by sunpingji on 2016/12/22.
  */
 
 public class Ticket extends BaseBean {

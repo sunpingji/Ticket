@@ -21,7 +21,7 @@ import pjsun.ticket.business.bean.Ticket;
 import pjsun.ticket.ui.activity.view.controller.ItemTouchHelperClass;
 
 /**
- * Created by sunpi on 2016/12/23.
+ * Created by sunpingji on 2016/12/23.
  */
 
 public class TicketMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemTouchHelperClass.ItemTouchHelperAdapter {
