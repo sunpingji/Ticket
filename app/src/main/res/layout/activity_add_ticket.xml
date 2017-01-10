@@ -10,4 +10,33 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="pjsun.ticket.ui.activity.AddTicketActivity">
 
+    <EditText
+        android:id="@+id/ticket_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="name" />
+
+    <EditText
+        android:id="@+id/ticket_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ticket_name"
+        android:hint="number"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/ticket_des"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ticket_number"
+        android:hint="des" />
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="submit" />
+
 </RelativeLayout>

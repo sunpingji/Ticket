@@ -32,6 +32,11 @@ public class TicketMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.tickets = tickets;
     }
 
+    public void refresh(List<Ticket> tickets){
+        this.tickets = tickets;
+        notifyDataSetChanged();
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new TicketHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.ticket_main_list_item, parent, false));

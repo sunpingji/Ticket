@@ -27,6 +27,7 @@ public class MainActivity extends BaseActivity {
 
     private RecyclerView recyclerView;
     private TicketMainAdapter ticketMainAdapter;
+    List<Ticket> tickets;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +37,15 @@ public class MainActivity extends BaseActivity {
         initData();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        tickets = DataSupport.findAll(Ticket.class);
+        ticketMainAdapter.refresh(tickets);
+    }
+
     private void initData() {
-        List<Ticket> tickets = DataSupport.findAll(Ticket.class);
+        tickets = DataSupport.findAll(Ticket.class);
         ticketMainAdapter = new TicketMainAdapter(tickets);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         ItemTouchHelper.Callback callback = new ItemTouchHelperClass(ticketMainAdapter);
