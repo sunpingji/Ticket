@@ -28,11 +28,14 @@ public class TicketMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private List<Ticket> tickets = new ArrayList<>();
 
-    public TicketMainAdapter(List<Ticket> tickets) {
+    private IViewHolderClickListener listener;
+
+    public TicketMainAdapter(List<Ticket> tickets,IViewHolderClickListener listener) {
         this.tickets = tickets;
+        this.listener = listener;
     }
 
-    public void refresh(List<Ticket> tickets){
+    public void refresh(List<Ticket> tickets) {
         this.tickets = tickets;
         notifyDataSetChanged();
     }
@@ -43,18 +46,24 @@ public class TicketMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         TicketHolder ticketHolder = (TicketHolder) holder;
         Ticket ticket = tickets.get(position);
-        String name = TextUtils.isEmpty(ticket.getName())?"a":ticket.getName().substring(0,1);
+        String name = TextUtils.isEmpty(ticket.getName()) ? "a" : ticket.getName().substring(0, 1);
         ticketHolder.tvName.setText(ticket.getName());
         TextDrawable drawable = TextDrawable.builder().beginConfig()
                 .textColor(Color.WHITE)
                 .useFont(Typeface.DEFAULT)
                 .toUpperCase()
                 .endConfig()
-                .buildRound(name.substring(0,1),Color.RED);
+                .buildRound(name.substring(0, 1), Color.RED);
         ticketHolder.ivIcon.setImageDrawable(drawable);
+        ticketHolder.container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.OnItemClick(position);
+            }
+        });
     }
 
     @Override
@@ -64,14 +73,13 @@ public class TicketMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void onItemMoved(int fromPosition, int toPosition) {
-        if(fromPosition<toPosition){
-            for(int i=fromPosition; i<toPosition; i++){
-                Collections.swap(tickets, i, i+1);
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(tickets, i, i + 1);
             }
-        }
-        else{
-            for(int i=fromPosition; i > toPosition; i--){
-                Collections.swap(tickets, i, i-1);
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(tickets, i, i - 1);
             }
         }
         notifyItemMoved(fromPosition, toPosition);
@@ -79,17 +87,26 @@ public class TicketMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void onItemRemoved(int position) {
-
+        if (position >= 0 && position < tickets.size()) {
+            tickets.remove(position);
+            notifyItemRemoved(position);
+        }
     }
 
     public static class TicketHolder extends RecyclerView.ViewHolder {
         TextView tvName;
         ImageView ivIcon;
+        View container;
 
         TicketHolder(View view) {
             super(view);
+            container = view;
             tvName = (TextView) view.findViewById(R.id.tv_name);
             ivIcon = (ImageView) view.findViewById(R.id.iv_icon);
         }
+    }
+
+    public interface IViewHolderClickListener {
+        public void OnItemClick(int pos);
     }
 }

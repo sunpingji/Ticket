@@ -1,15 +1,25 @@
 package pjsun.ticket.ui.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import pjsun.ticket.Constant;
 import pjsun.ticket.R;
+import pjsun.ticket.business.bean.Ticket;
 import pjsun.ticket.ui.activity.base.BaseActivity;
 
 public class TicketDetailActivity extends BaseActivity {
+
+    public static void start(Context context, Ticket ticket) {
+        Intent intent = new Intent(context, TicketDetailActivity.class);
+        intent.putExtra(Constant.Extra.EXTRA_TICKET,ticket);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,15 +28,6 @@ public class TicketDetailActivity extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AddTicketActivity.start(TicketDetailActivity.this);
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
 }

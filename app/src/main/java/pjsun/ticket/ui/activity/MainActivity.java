@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +36,26 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         initView();
         initData();
+        initListeners();
+    }
+
+    private void initListeners() {
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+        });
     }
 
     @Override
@@ -46,7 +67,12 @@ public class MainActivity extends BaseActivity {
 
     private void initData() {
         tickets = DataSupport.findAll(Ticket.class);
-        ticketMainAdapter = new TicketMainAdapter(tickets);
+        ticketMainAdapter = new TicketMainAdapter(tickets, new TicketMainAdapter.IViewHolderClickListener() {
+            @Override
+            public void OnItemClick(int pos) {
+                TicketDetailActivity.start(MainActivity.this, tickets.get(pos));
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         ItemTouchHelper.Callback callback = new ItemTouchHelperClass(ticketMainAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
