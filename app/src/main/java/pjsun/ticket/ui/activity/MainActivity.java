@@ -40,22 +40,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initListeners() {
-        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-            }
-        });
     }
 
     @Override
@@ -92,7 +76,8 @@ public class MainActivity extends BaseActivity {
         ticketMainAdapter = new TicketMainAdapter(tickets, new TicketMainAdapter.IViewHolderClickListener() {
             @Override
             public void OnItemClick(int pos) {
-                TicketDetailActivity.start(MainActivity.this, tickets.get(pos));
+                Ticket ticket = tickets.get(pos);
+                TicketDetailActivity.start(MainActivity.this, ticket, ticket.getBaseObjId());
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));

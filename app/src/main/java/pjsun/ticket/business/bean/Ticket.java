@@ -10,7 +10,7 @@ import pjsun.ticket.business.bean.base.BaseBean;
  * Created by sunpingji on 2016/12/22.
  */
 
-public class Ticket extends BaseBean {
+public class Ticket extends BaseBean implements Serializable {
 
     private String uniqId;
 

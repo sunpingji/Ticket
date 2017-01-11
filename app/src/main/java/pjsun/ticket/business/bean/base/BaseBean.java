@@ -9,4 +9,9 @@ import java.io.Serializable;
  */
 
 public class BaseBean extends DataSupport implements Serializable{
+
+    @Override
+    public long getBaseObjId() {
+        return super.getBaseObjId();
+    }
 }

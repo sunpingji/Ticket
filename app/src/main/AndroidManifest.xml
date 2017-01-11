@@ -21,10 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.activity.TicketDetailActivity"
-            android:label="@string/title_activity_ticket_detail"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.activity.TicketDetailActivity" />
         <activity android:name=".ui.activity.AddTicketActivity"></activity>
     </application>
 
