@@ -24,6 +24,8 @@ public class Ticket extends BaseBean {
 
     private int number;
 
+    private int sequenceNumber;
+
     public String getUniqId() {
         return uniqId;
     }
@@ -70,5 +72,13 @@ public class Ticket extends BaseBean {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public int getSequenceNumber() {
+        return sequenceNumber;
+    }
+
+    public void setSequenceNumber(int sequenceNumber) {
+        this.sequenceNumber = sequenceNumber;
     }
 }

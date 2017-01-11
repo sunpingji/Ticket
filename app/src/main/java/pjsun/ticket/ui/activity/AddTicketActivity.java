@@ -10,14 +10,16 @@ import android.widget.EditText;
 
 import com.blankj.utilcode.utils.ToastUtils;
 
+import pjsun.ticket.Constant;
 import pjsun.ticket.R;
 import pjsun.ticket.business.bean.Ticket;
 import pjsun.ticket.ui.activity.base.BaseActivity;
 
 public class AddTicketActivity extends BaseActivity {
 
-    public static void start(Context context) {
+    public static void start(Context context, int ticketSize) {
         Intent intent = new Intent(context, AddTicketActivity.class);
+        intent.putExtra(Constant.Extra.EXTRA_TICKET_SIZE, ticketSize);
         context.startActivity(intent);
     }
 
@@ -25,6 +27,7 @@ public class AddTicketActivity extends BaseActivity {
     private EditText numberEt;
     private EditText desEt;
     private Button submitBtn;
+    private int ticketSize;
 
 
     @Override
@@ -47,6 +50,7 @@ public class AddTicketActivity extends BaseActivity {
                     ticket.setName(name);
                     ticket.setNumber(Integer.valueOf(number));
                     ticket.setDes(desEt.getText().toString());
+                    ticket.setSequenceNumber(ticketSize + 1);
                     ticket.save();
                     finish();
                 } else {
@@ -57,7 +61,7 @@ public class AddTicketActivity extends BaseActivity {
     }
 
     private void initData() {
-
+        ticketSize = getIntent().getIntExtra(Constant.Extra.EXTRA_TICKET_SIZE, 0);
     }
 
     private void initViews() {

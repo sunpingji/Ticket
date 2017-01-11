@@ -2,8 +2,6 @@ package pjsun.ticket.ui.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,10 +14,12 @@ import android.view.MenuItem;
 
 import org.litepal.crud.DataSupport;
 
+import java.util.Collections;
 import java.util.List;
 
 import pjsun.ticket.R;
 import pjsun.ticket.business.bean.Ticket;
+import pjsun.ticket.business.comparator.TicketSeqComparator;
 import pjsun.ticket.ui.activity.adapter.TicketMainAdapter;
 import pjsun.ticket.ui.activity.base.BaseActivity;
 import pjsun.ticket.ui.activity.view.controller.ItemTouchHelperClass;
@@ -62,11 +62,33 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         tickets = DataSupport.findAll(Ticket.class);
+        Collections.sort(tickets, new TicketSeqComparator());
         ticketMainAdapter.refresh(tickets);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        saveData();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveData();
+    }
+
+    private void saveData() {
+        for (int i = 0; i < tickets.size(); i++) {
+            Ticket ticket = tickets.get(i);
+            ticket.setSequenceNumber(i);
+            ticket.save();
+        }
     }
 
     private void initData() {
         tickets = DataSupport.findAll(Ticket.class);
+        Collections.sort(tickets, new TicketSeqComparator());
         ticketMainAdapter = new TicketMainAdapter(tickets, new TicketMainAdapter.IViewHolderClickListener() {
             @Override
             public void OnItemClick(int pos) {
@@ -91,9 +113,7 @@ public class MainActivity extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddTicketActivity.start(MainActivity.this);
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                AddTicketActivity.start(MainActivity.this, tickets.size());
             }
         });
         recyclerView = (RecyclerView) findViewById(R.id.ticket_list);

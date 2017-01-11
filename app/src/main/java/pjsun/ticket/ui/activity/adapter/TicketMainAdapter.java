@@ -85,6 +85,7 @@ public class TicketMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         notifyItemMoved(fromPosition, toPosition);
     }
 
+
     @Override
     public void onItemRemoved(int position) {
         if (position >= 0 && position < tickets.size()) {
