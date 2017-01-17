@@ -7,6 +7,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,7 +20,7 @@ import pjsun.ticket.R;
 import pjsun.ticket.business.bean.Ticket;
 import pjsun.ticket.ui.activity.base.BaseActivity;
 
-public class TicketDetailActivity extends BaseActivity {
+public class TicketDetailActivity extends BaseActivity implements View.OnClickListener {
 
     public static void start(Context context, Ticket ticket, long id) {
         Intent intent = new Intent(context, TicketDetailActivity.class);
@@ -34,6 +36,8 @@ public class TicketDetailActivity extends BaseActivity {
     private Ticket ticket;
     private long id;
 
+    private boolean isEditMode = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,22 +48,7 @@ public class TicketDetailActivity extends BaseActivity {
     }
 
     private void initListeners() {
-        submitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = nameEt.getText().toString();
-                String number = numberEt.getText().toString();
-                if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(number)) {
-                    ticket.setName(name);
-                    ticket.setNumber(Integer.valueOf(number));
-                    ticket.setDes(desEt.getText().toString());
-                    ticket.update(id);
-                    finish();
-                } else {
-                    ToastUtils.showShortToast("something wrong");
-                }
-            }
-        });
+        submitBtn.setOnClickListener(this);
     }
 
     private void initData() {
@@ -70,6 +59,7 @@ public class TicketDetailActivity extends BaseActivity {
         if (!TextUtils.isEmpty(ticket.getDes())) {
             desEt.setText(ticket.getDes());
         }
+        setEditMode(false);
     }
 
     private void initViews() {
@@ -79,4 +69,90 @@ public class TicketDetailActivity extends BaseActivity {
         submitBtn = (Button) findViewById(R.id.btn_submit);
     }
 
+    private void setEditMode(boolean flag) {
+        isEditMode = flag;
+        setTextEditable();
+        setBtnText();
+    }
+
+    private void setBtnText() {
+        if (isEditMode) {
+            submitBtn.setText(getString(R.string.complete));
+        } else {
+            submitBtn.setText(getString(R.string.use));
+        }
+    }
+
+    private void setTextEditable() {
+        nameEt.setEnabled(isEditMode);
+        numberEt.setEnabled(isEditMode);
+        desEt.setEnabled(isEditMode);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_edit) {
+            setEditMode(true);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_submit:
+                handleSubmitClick();
+                break;
+        }
+    }
+
+    private void handleSubmitClick() {
+        if (isEditMode) {
+            updateTicket();
+            setEditMode(false);
+            ToastUtils.showShortToast("edit ticket success");
+        } else {
+            String number = numberEt.getText().toString();
+            if (!TextUtils.isEmpty(number)) {
+                int num = Integer.valueOf(number);
+                if (num > 0) {
+                    num--;
+                    numberEt.setText(String.valueOf(num));
+                    updateTicket();
+                    ToastUtils.showShortToast("using ticket success");
+                }
+            }
+        }
+    }
+
+    private void updateTicket() {
+        String name = nameEt.getText().toString();
+        String number = numberEt.getText().toString();
+        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(number)) {
+            int num = Integer.valueOf(number);
+            if (num >= 0) {
+                ticket.setName(name);
+                ticket.setNumber(Integer.valueOf(number));
+                ticket.setDes(desEt.getText().toString());
+                ticket.update(id);
+            }
+        } else {
+            ToastUtils.showShortToast("something wrong");
+        }
+    }
 }

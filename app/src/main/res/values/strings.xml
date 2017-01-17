@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Ticket</string>
     <string name="action_settings">Settings</string>
+    <string name="action_edit">edit</string>
+    <string name="submit">submit</string>
+    <string name="use">use</string>
+    <string name="complete">complete</string>
     <string name="title_activity_ticket_detail">TicketDetailActivity</string>
 </resources>
