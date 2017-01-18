@@ -33,7 +33,8 @@ public class TicketDetailActivity extends BaseActivity implements View.OnClickLi
     private EditText numberEt;
     private EditText desEt;
     private Button submitBtn;
-    private Ticket ticket;
+    private Ticket oldTicket;
+    private Ticket newTicket;
     private long id;
 
     private boolean isEditMode = false;
@@ -52,12 +53,13 @@ public class TicketDetailActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void initData() {
-        ticket = (Ticket) getIntent().getSerializableExtra(Constant.Extra.EXTRA_TICKET);
+        oldTicket = (Ticket) getIntent().getSerializableExtra(Constant.Extra.EXTRA_TICKET);
         id = getIntent().getLongExtra(Constant.Extra.EXTRA_TICKET_OBJ_ID, 0);
-        nameEt.setText(ticket.getName());
-        numberEt.setText(String.valueOf(ticket.getNumber()));
-        if (!TextUtils.isEmpty(ticket.getDes())) {
-            desEt.setText(ticket.getDes());
+        newTicket = new Ticket();
+        nameEt.setText(oldTicket.getName());
+        numberEt.setText(String.valueOf(oldTicket.getNumber()));
+        if (!TextUtils.isEmpty(oldTicket.getDes())) {
+            desEt.setText(oldTicket.getDes());
         }
         setEditMode(false);
     }
@@ -146,10 +148,10 @@ public class TicketDetailActivity extends BaseActivity implements View.OnClickLi
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(number)) {
             int num = Integer.valueOf(number);
             if (num >= 0) {
-                ticket.setName(name);
-                ticket.setNumber(Integer.valueOf(number));
-                ticket.setDes(desEt.getText().toString());
-                ticket.update(id);
+                newTicket.setName(name);
+                newTicket.setNumber(Integer.valueOf(number));
+                newTicket.setDes(desEt.getText().toString());
+                newTicket.update(id);
             }
         } else {
             ToastUtils.showShortToast("something wrong");

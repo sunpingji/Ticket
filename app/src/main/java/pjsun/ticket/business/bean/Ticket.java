@@ -1,7 +1,5 @@
 package pjsun.ticket.business.bean;
 
-import org.litepal.annotation.Column;
-
 import java.io.Serializable;
 
 import pjsun.ticket.business.bean.base.BaseBean;

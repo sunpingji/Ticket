@@ -24,6 +24,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/ticket_number" />
 
+    <FrameLayout
+        android:id="@+id/ticket_history_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ticket_des"></FrameLayout>
+
     <Button
         android:id="@+id/btn_submit"
         android:layout_width="wrap_content"

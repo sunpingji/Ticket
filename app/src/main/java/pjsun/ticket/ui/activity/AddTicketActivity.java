@@ -8,12 +8,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.blankj.utilcode.utils.EncryptUtils;
+import com.blankj.utilcode.utils.FileUtils;
+import com.blankj.utilcode.utils.TimeUtils;
 import com.blankj.utilcode.utils.ToastUtils;
 
 import pjsun.ticket.Constant;
 import pjsun.ticket.R;
 import pjsun.ticket.business.bean.Ticket;
+import pjsun.ticket.business.helper.TicketHistoryHelper;
 import pjsun.ticket.ui.activity.base.BaseActivity;
+import pjsun.ticket.util.MD5;
 
 public class AddTicketActivity extends BaseActivity {
 
@@ -51,7 +56,9 @@ public class AddTicketActivity extends BaseActivity {
                     ticket.setNumber(Integer.valueOf(number));
                     ticket.setDes(desEt.getText().toString());
                     ticket.setSequenceNumber(ticketSize + 1);
+                    ticket.setUniqId(MD5.getStringMD5(name + TimeUtils.getNowTimeString()));
                     ticket.save();
+                    TicketHistoryHelper.addTicketCreateHistory(ticket);
                     finish();
                 } else {
                     ToastUtils.showShortToast("something wrong");
