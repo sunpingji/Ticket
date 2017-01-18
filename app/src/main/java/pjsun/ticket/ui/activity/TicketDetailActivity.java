@@ -19,6 +19,7 @@ import pjsun.ticket.Constant;
 import pjsun.ticket.R;
 import pjsun.ticket.business.bean.Ticket;
 import pjsun.ticket.ui.activity.base.BaseActivity;
+import pjsun.ticket.ui.fragment.TicketHistoryFragment;
 
 public class TicketDetailActivity extends BaseActivity implements View.OnClickListener {
 
@@ -36,6 +37,8 @@ public class TicketDetailActivity extends BaseActivity implements View.OnClickLi
     private Ticket oldTicket;
     private Ticket newTicket;
     private long id;
+
+    private TicketHistoryFragment ticketHistoryFragment;
 
     private boolean isEditMode = false;
 
@@ -69,6 +72,7 @@ public class TicketDetailActivity extends BaseActivity implements View.OnClickLi
         numberEt = (EditText) findViewById(R.id.ticket_number);
         desEt = (EditText) findViewById(R.id.ticket_des);
         submitBtn = (Button) findViewById(R.id.btn_submit);
+        getFragmentManager().beginTransaction().replace(R.id.ticket_history_container, new TicketHistoryFragment()).commitAllowingStateLoss();
     }
 
     private void setEditMode(boolean flag) {

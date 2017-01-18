@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +19,7 @@ import java.util.List;
 import pjsun.ticket.R;
 import pjsun.ticket.business.bean.Ticket;
 import pjsun.ticket.business.comparator.TicketSeqComparator;
-import pjsun.ticket.ui.activity.adapter.TicketMainAdapter;
+import pjsun.ticket.ui.adapter.TicketMainAdapter;
 import pjsun.ticket.ui.activity.base.BaseActivity;
 import pjsun.ticket.ui.activity.view.controller.ItemTouchHelperClass;
 

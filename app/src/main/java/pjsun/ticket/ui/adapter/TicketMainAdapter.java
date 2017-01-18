@@ -1,4 +1,4 @@
-package pjsun.ticket.ui.activity.adapter;
+package pjsun.ticket.ui.adapter;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -30,7 +30,7 @@ public class TicketMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private IViewHolderClickListener listener;
 
-    public TicketMainAdapter(List<Ticket> tickets,IViewHolderClickListener listener) {
+    public TicketMainAdapter(List<Ticket> tickets, IViewHolderClickListener listener) {
         this.tickets = tickets;
         this.listener = listener;
     }
@@ -94,7 +94,7 @@ public class TicketMainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-    public static class TicketHolder extends RecyclerView.ViewHolder {
+    protected class TicketHolder extends RecyclerView.ViewHolder {
         TextView tvName;
         ImageView ivIcon;
         View container;
