@@ -22,7 +22,7 @@ public class TicketHelper {
                 stringBuilder.append("name changed ");
             }
             if (oldTicket.getNumber() != newTicket.getNumber()) {
-                stringBuilder.append("number changed " + (oldTicket.getNumber() - newTicket.getNumber()));
+                stringBuilder.append("number changed " + (newTicket.getNumber() - oldTicket.getNumber()));
             }
             if (!TextUtils.equals(oldTicket.getDes(), newTicket.getDes())) {
                 stringBuilder.append("des changed");
