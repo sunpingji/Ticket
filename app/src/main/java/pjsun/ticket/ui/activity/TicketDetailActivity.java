@@ -3,9 +3,6 @@ package pjsun.ticket.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +15,8 @@ import com.blankj.utilcode.utils.ToastUtils;
 import pjsun.ticket.Constant;
 import pjsun.ticket.R;
 import pjsun.ticket.business.bean.Ticket;
+import pjsun.ticket.business.helper.TicketHelper;
+import pjsun.ticket.business.helper.TicketHistoryHelper;
 import pjsun.ticket.ui.activity.base.BaseActivity;
 import pjsun.ticket.ui.fragment.TicketHistoryFragment;
 
@@ -38,8 +37,6 @@ public class TicketDetailActivity extends BaseActivity implements View.OnClickLi
     private Ticket newTicket;
     private long id;
 
-    private TicketHistoryFragment ticketHistoryFragment;
-
     private boolean isEditMode = false;
 
     @Override
@@ -49,6 +46,10 @@ public class TicketDetailActivity extends BaseActivity implements View.OnClickLi
         initViews();
         initData();
         initListeners();
+    }
+
+    private void updateFragment() {
+        getFragmentManager().beginTransaction().replace(R.id.ticket_history_container, new TicketHistoryFragment()).commitAllowingStateLoss();
     }
 
     private void initListeners() {
@@ -72,7 +73,7 @@ public class TicketDetailActivity extends BaseActivity implements View.OnClickLi
         numberEt = (EditText) findViewById(R.id.ticket_number);
         desEt = (EditText) findViewById(R.id.ticket_des);
         submitBtn = (Button) findViewById(R.id.btn_submit);
-        getFragmentManager().beginTransaction().replace(R.id.ticket_history_container, new TicketHistoryFragment()).commitAllowingStateLoss();
+        updateFragment();
     }
 
     private void setEditMode(boolean flag) {
@@ -128,37 +129,44 @@ public class TicketDetailActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void handleSubmitClick() {
-        if (isEditMode) {
-            updateTicket();
+        if (updateTicket(!isEditMode)) {
+            updateFragment();
+            ToastUtils.showShortToast(isEditMode ? "edit ticket success" : "use ticket success");
             setEditMode(false);
-            ToastUtils.showShortToast("edit ticket success");
-        } else {
-            String number = numberEt.getText().toString();
-            if (!TextUtils.isEmpty(number)) {
-                int num = Integer.valueOf(number);
-                if (num > 0) {
-                    num--;
-                    numberEt.setText(String.valueOf(num));
-                    updateTicket();
-                    ToastUtils.showShortToast("using ticket success");
-                }
-            }
         }
     }
 
-    private void updateTicket() {
+    /***
+     * if not changed or change not success will return false
+     *
+     * @param use
+     * @return true when successfully changed
+     */
+    private boolean updateTicket(boolean use) {
         String name = nameEt.getText().toString();
         String number = numberEt.getText().toString();
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(number)) {
             int num = Integer.valueOf(number);
-            if (num >= 0) {
-                newTicket.setName(name);
-                newTicket.setNumber(Integer.valueOf(number));
-                newTicket.setDes(desEt.getText().toString());
+            if (use && num < 1) {
+                return false;
+            }
+            if (use) {
+                num--;
+                numberEt.setText(String.valueOf(num));
+            }
+            newTicket.setName(name);
+            newTicket.setNumber(num);
+            newTicket.setDes(desEt.getText().toString());
+            if (TicketHelper.hasTicketChanged(oldTicket, newTicket)) {
                 newTicket.update(id);
+                TicketHistoryHelper.addTicketEditHistory(oldTicket, newTicket);
+                oldTicket = Ticket.deepCopy(newTicket);
+                return true;
+            } else {
+                return false;
             }
         } else {
-            ToastUtils.showShortToast("something wrong");
+            return false;
         }
     }
 }

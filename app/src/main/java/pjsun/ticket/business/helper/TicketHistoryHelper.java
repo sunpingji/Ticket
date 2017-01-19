@@ -21,23 +21,14 @@ public class TicketHistoryHelper {
         ticketHistory.save();
     }
 
-    public static void addicketEditHistory(Ticket oldTicket, Ticket newTicket) {
+    public static void addTicketEditHistory(Ticket oldTicket, Ticket newTicket) {
         TicketHistory ticketHistory = new TicketHistory();
         ticketHistory.setName(newTicket.getName());
         ticketHistory.setNumber(newTicket.getNumber() - oldTicket.getNumber());
         ticketHistory.setTime(TimeUtils.getNowTimeString());
         ticketHistory.setUniqId(newTicket.getUniqId());
-        ticketHistory.setReason("edit");
+        ticketHistory.setReason(TicketHelper.getTicketChangedReason(oldTicket, newTicket));
         ticketHistory.save();
     }
 
-    public static void addTicketUseHistory(Ticket ticket) {
-        TicketHistory ticketHistory = new TicketHistory();
-        ticketHistory.setName(ticket.getName());
-        ticketHistory.setNumber(1);
-        ticketHistory.setTime(TimeUtils.getNowTimeString());
-        ticketHistory.setReason("use");
-        ticketHistory.setUniqId(ticket.getUniqId());
-        ticketHistory.save();
-    }
 }

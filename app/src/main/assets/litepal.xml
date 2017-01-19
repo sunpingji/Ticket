@@ -34,6 +34,7 @@
 
     <list>
         <mapping class="pjsun.ticket.business.bean.Ticket"></mapping>
+        <mapping class="pjsun.ticket.business.bean.TicketHistory"></mapping>
     </list>
 
     <!--

@@ -53,6 +53,7 @@ public class TicketHistoryAdapter extends RecyclerView.Adapter<RecyclerView.View
                 .endConfig()
                 .buildRound(name.substring(0, 1), Color.RED);
         ticketHistoryHolder.ivIcon.setImageDrawable(drawable);
+        ticketHistoryHolder.tvTime.setText(ticketHistory.getReason());
     }
 
     @Override
